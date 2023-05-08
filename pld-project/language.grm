@@ -1,0 +1,65 @@
+ "Start Symbol" = <program>
+!-----Terminal------------
+Id={letter}   
+Digit={digit}
+!-----Rules---------------
+<program> ::= '{'<body>'}'
+           
+<body>::= <concept>
+       |<concept><body>        
+<concept>::=<assign>
+          |<if_stmt>
+          |<for_stmt>
+          |<switch_stmt>
+          |<method_decl>
+          |<method_call>
+          
+<assign>::=<id>'='<expr> ';'
+<id> ::= Id | Id <id>
+<expr>::=<expr>'+'<term>
+       |<expr>'-'<term> 
+       |<term>
+<term>::=<term>'*'<factor>
+       |<term>'/'<factor>
+       |<term>'%'<factor>
+       |<factor>
+<factor> ::=<factor>'**'<exp>
+          |<exp>
+<digit>::=Digit
+<exp>::='('<expr>')'
+      |<id>
+      |<digit> 
+
+!-----if---------------------------------
+<if_stmt>::=if'('<cond>')''{'<body>'}'
+          |if'('<cond>')''{'<body>'}'else'{'<body>'}'
+<cond>::=<expr><op><expr>
+<op>::='<'|'>'|'=='|'!=' 
+!------for-------------------------------
+<for_stmt>::=for'('<data><assign><cond>';'<step>')''{'<body>'}'
+<data>::=int|float|double|string|char|void
+<step>::=<id>'++'|<id>'--'|'--'<id>|'++'<id>|<assign>
+
+!------switch----------------------------
+<switch_stmt> ::= 'switch' '(' <expr> ')' '{' <case_list> '}'
+
+<case_list> ::= <case_item> | <case_item> <case_list>
+
+<case_item> ::= 'case' <expr> ':' <body> <break_stmt>
+              | 'default' ':' <body>
+
+<break_stmt> ::= 'break' ';'
+             
+!------method declaration---------------
+<method_decl> ::= <data> <method_name> '(' <parameters> ')' '{' <body> '}'
+
+<method_name> ::= <id>
+
+<parameters> ::= <param> | <param> ',' <parameters>
+
+<param> ::= <data> <id>
+
+!------method call---------------------
+<method_call> ::= <method_name> '(' <arguments> ')'
+
+<arguments> ::= <expr> | <expr> ',' <arguments>
